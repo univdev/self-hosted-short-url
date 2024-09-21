@@ -1,9 +1,14 @@
 {
   "name": "self-hosted-short-url",
+  "author": "Univdev <pcydeveloper@gmail.com>",
   "devDependencies": {
     "prettier": "^3.2.5",
     "turbo": "^2.1.2",
     "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "lint": "turbo lint"
   },
   "packageManager": "pnpm@9.6.0",
   "engines": {
