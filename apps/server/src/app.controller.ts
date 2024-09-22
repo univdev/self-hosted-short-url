@@ -1,12 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Param, Redirect } from '@nestjs/common';
+import { UrlsService } from './urls/urls.service';
+import { HttpError } from './http-error/http-error';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly urlsService: UrlsService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('/:shortCode')
+  @Redirect('/', 404)
+  async redirectByShortCode(@Param('shortCode') shortCode: string) {
+    try {
+    const item = (await this.urlsService.findByShortCode(shortCode)).data;
+
+    return { url: item.destination_url, statusCode: 302 };
+    } catch (err) {
+      if (err instanceof HttpError) {
+        return { url: '/', statusCode: 404 };
+      }
+    }
   }
 }
